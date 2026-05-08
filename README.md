@@ -1,6 +1,8 @@
-# Gestion Employés
+# 🛒 ShopHub - Marketplace Moderne
 
-Application de gestion d'employés grâce à un système CRUD.
+**ShopHub** est une plateforme de petites annonces élégante et performante conçue avec **Django** et **Tailwind CSS**. Elle permet aux utilisateurs de publier des articles, de gérer leur inventaire et de communiquer en temps réel via une messagerie intégrée.
+
+---
 
 ![Django](https://img.shields.io/badge/Django-v4-305F47)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8.svg)
@@ -8,16 +10,18 @@ Application de gestion d'employés grâce à un système CRUD.
 
 ## 📋 Fonctionnalités
 
-- **Ajouter d'un employé :** Nom, Email, Poste, Salaire.
-- **Modification d'un employé :** Modifier les informations d'un employés enregistré.
-- **Suppression d'un employé :** Supprimer un employé de la liste des employés.
-- **Interface Moderne :** Design épuré construit avec Tailwind CSS v4 et Daisy UI.
+*   **Gestion des Articles** : Création, modification et suppression d'annonces avec images.
+*   **Système de Messagerie** : Discussion instantanée entre acheteurs et vendeurs.
+*   **Recherche Avancée** : Filtrage par catégorie et recherche textuelle fluide.
+*   **Dashboard Utilisateur** : Vue d'ensemble des articles mis en vente.
+*   **Design Premium** : Interface responsive avec une esthétique moderne et épurée (Style SaaS).
 
 ## 🛠️ Stack Technique
 
-- **Frontend :** Django HTML
-- **Style :** Tailwind CSS v4 + Daisy UI
-- **Backend :** Django
+*   **Backend** : Python 3.10+, Django 4.2+
+*   **Frontend** : Tailwind CSS (via CDN ou PostCSS)
+*   **Base de données** : SQLite (Développement) / PostgreSQL (Production)
+*   **Traitement d'images** : Pillow
 
 ---
 
@@ -31,8 +35,8 @@ Application de gestion d'employés grâce à un système CRUD.
 
 ```bash
 # Cloner le dépôt (si ce n'est pas déjà fait)
-git clone https://github.com/Ymax27/gestion-employes-CRUD.git
-cd gestion-employe-CRUD
+git clone https://github.com/Ymax27/ShopHub---MarketPlace.git
+cd ShopHub---MarketPlace
 
 # Créer et activer l'environnement virtuel
 python -m venv env
@@ -53,7 +57,12 @@ python3 manage.py runserver
 
 ## 📸 Captures d'écran
 
-![Interface principale](docs/screenshots/gestion.png)
+![Interface principale](docs/screenshots/page1.png)
+![Interface principale](docs/screenshots/page2.png)
+![Interface principale](docs/screenshots/page3.png)
+![Interface principale](docs/screenshots/page4.png)
+![Interface principale](docs/screenshots/page5.png)
+
 
 
 ## 🗂️ Structure du projet
@@ -64,10 +73,13 @@ python3 manage.py runserver
         ├── gestion.png
         │             
 
-├── employe/              #Application employe
-├── employe_project/      #Projet et config
+├── config/            #Projet et config
+├── conversation/      #Application conversation
+├── core/              #Application principale
+├── dashboard/         #Application dashboard
+├── item/              #Application item
 ├── manage.py             
-├── requirements.txt      # Dépendances Python
+├── requirements.txt   # Dépendances Python
 │
 ├── README.md
 ├── .gitignore
@@ -104,7 +116,7 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
 
 ## 📞 Support
 
-Pour toute question ou problème, veuillez ouvrir une [issue](https://github.com/Ymax27/gestion-employes-CRUD/issues).
+Pour toute question ou problème, veuillez ouvrir une [issue](https://github.com/Ymax27/ShopHub---MarketPlace.git).
 
 ---
 
