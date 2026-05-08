@@ -1,0 +1,110 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Contactez-nous{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-12 px-4">
+    
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+        <h1 class="text-5xl font-black text-sh_secondary tracking-tight mb-4">Parlons ensemble</h1>
+        <p class="text-gray-500 text-lg max-w-2xl mx-auto">
+            Une question sur un article ? Un problème technique ? Notre équipe est là pour vous aider à faire de bonnes affaires.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        
+        <!-- Colonne de Gauche : Infos de contact -->
+        <div class="space-y-8">
+            <div class="bg-indigo-900 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden">
+                <h2 class="text-2xl font-bold mb-8">Informations de contact</h2>
+                
+                <div class="space-y-6 relative z-10">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <span class="font-medium">contact@shophub.cm</span>
+                    </div>
+
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <span class="font-medium">Yaoundé, Cameroun</span>
+                    </div>
+                </div>
+
+                <!-- Décoration abstraite -->
+                <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
+            </div>
+
+            <!-- FAQ rapide -->
+            <div class="p-8 border border-gray-100 rounded-[2.5rem] bg-white shadow-sm">
+                <h3 class="font-bold text-sh_secondary mb-4 italic">Réponse rapide ?</h3>
+                <p class="text-sm text-gray-500 leading-relaxed">
+                    Nous répondons généralement en moins de 24 heures durant les jours ouvrables.
+                </p>
+            </div>
+        </div>
+
+        <!-- Colonne de Droite : Le Formulaire -->
+        <div class="bg-white rounded-[3rem] p-10 shadow-xl shadow-indigo-50 border border-gray-50">
+            <form action="#" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-black uppercase tracking-widest text-gray-400 ml-1">Nom</label>
+                        <input type="text" placeholder="Ex: Maxwell" class="sh-input">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-black uppercase tracking-widest text-gray-400 ml-1">Email</label>
+                        <input type="email" placeholder="votre@email.com" class="sh-input">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-black uppercase tracking-widest text-gray-400 ml-1">Sujet</label>
+                    <input type="text" placeholder="Comment pouvons-nous aider ?" class="sh-input">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-black uppercase tracking-widest text-gray-400 ml-1">Message</label>
+                    <textarea rows="5" placeholder="Dites-nous tout..." class="sh-input"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-5 bg-sh_primary hover:bg-indigo-700 text-white font-black rounded-2xl shadow-lg shadow-indigo-100 transition-all transform hover:-translate-y-1">
+                    Envoyer le message
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .sh-input {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        background-color: #F9FAFB;
+        border: 2px solid #F3F4F6;
+        border-radius: 1.25rem;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    .sh-input:focus {
+        background-color: #FFFFFF;
+        border-color: #4F46E5;
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
+    }
+    
+    textarea.sh-input {
+        resize: none;
+    }
+</style>
+{% endblock %}

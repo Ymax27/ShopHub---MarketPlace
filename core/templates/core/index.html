@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+
+    <!-- Hero Section : L'accroche visuelle -->
+    <section class="relative overflow-hidden mb-16 rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-700 to-sh_secondary text-white shadow-2xl">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="relative px-8 py-20 md:py-28 flex flex-col items-center text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight leading-tight">
+                Trouvez des pépites <br><span class="text-indigo-200">juste à côté de chez vous.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-indigo-100 max-w-2xl mb-10 font-light">
+                ShopHub connecte les voisins pour acheter, vendre et échanger localement. Simple, sécurisé et rapide.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="{% url 'item:items' %}" class="px-8 py-4 bg-white text-sh_primary font-bold rounded-2xl hover:scale-105 transition-transform shadow-xl">
+                    Explorer les offres
+                </a>
+                <a href="{% url 'item:new' %}" class="px-8 py-4 bg-transparent border-2 border-white/30 backdrop-blur-sm text-white font-bold rounded-2xl hover:bg-white/10 transition-all">
+                    Vendre un objet
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Articles Récents -->
+    <div class="mb-20">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <h2 class="text-3xl font-bold text-sh_secondary">Dernières pépites</h2>
+                <div class="h-1.5 w-12 bg-sh_primary rounded-full mt-2"></div>
+            </div>
+            <a href="{% url 'item:items' %}" class="text-sh_primary font-semibold hover:underline flex items-center gap-2">
+                Voir tout
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for item in items %}
+                <div class="group relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100">
+                    <a href="{% url 'item:detail' item.id %}" class="block">
+                        <!-- Image Container -->
+                        <div class="aspect-[4/3] w-full overflow-hidden relative">
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute top-4 right-4 px-3 py-1 bg-white/90 backdrop-blur rounded-full shadow-sm">
+                                <span class="text-sh_primary font-bold text-sm">{{ item.price }} FCFA</span>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-1 group-hover:text-sh_primary transition-colors">{{ item.name }}</h3>
+                            <div class="flex items-center gap-2 text-gray-500 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <span>Localisation</span> <!-- Tu pourras binder ça plus tard -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Section Catégories -->
+    <div class="mb-20">
+        <div class="flex flex-col items-center mb-10 text-center">
+            <h2 class="text-3xl font-bold text-sh_secondary italic">Explorer par univers</h2>
+            <p class="text-gray-500 mt-2">Ce que vous cherchez se trouve sûrement ici</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {% for category in categories %}
+                <a href="#" class="group relative flex flex-col items-center p-8 bg-white rounded-3xl border border-gray-100 hover:border-sh_primary hover:shadow-xl transition-all">
+                    <div class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-sh_primary group-hover:text-white transition-colors">
+                        <!-- Icone générique ou spécifique -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-center">{{ category.name }}</h3>
+                    <p class="text-xs text-gray-400 mt-1 uppercase tracking-tighter">{{ category.items.count }} articles</p>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

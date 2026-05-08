@@ -1,0 +1,113 @@
+{% extends "core/base.html" %}
+
+{% block title %}Démarrer une discussion{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto py-10 px-4">
+    
+    <!-- Header de la conversation -->
+    <div class="flex items-center gap-6 mb-10">
+        <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center text-sh_primary shadow-sm border border-indigo-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+        </div>
+        <div>
+            <h1 class="text-3xl font-black text-sh_secondary tracking-tight">Nouvelle discussion</h1>
+            <p class="text-gray-500">Posez vos questions au vendeur pour finaliser la transaction.</p>
+        </div>
+    </div>
+
+    <!-- Carte de Formulaire -->
+    <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-indigo-100/50 border border-gray-100 overflow-hidden">
+        <div class="p-8 sm:p-12">
+            
+            <form action="." method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Zone de Message Stylisée -->
+                <div class="space-y-4">
+                    <label class="block text-sm font-bold text-sh_secondary uppercase tracking-widest ml-1">
+                        Votre message
+                    </label>
+                    
+                    <div class="relative group">
+                        <!-- On enveloppe {{ form.as_p }} ou les champs spécifiques -->
+                        <div class="sh-chat-form">
+                            {{ form.content }}
+                        </div>
+                        
+                        <!-- Petit indicateur visuel -->
+                        <div class="absolute bottom-4 right-4 text-gray-300 group-focus-within:text-sh_primary transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gestion des erreurs -->
+                {% if form.errors or form.non_field_errors %}
+                    <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-2xl">
+                        <div class="text-sm text-red-700">
+                            {% for field in form %}
+                                {{ field.errors|striptags }}
+                            {% endfor %}
+                            {{ form.non_field_errors|striptags }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Bouton d'envoi -->
+                <div class="pt-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
+                    <p class="text-xs text-gray-400 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Le vendeur recevra une notification instantanée.
+                    </p>
+                    <button type="submit" class="w-full sm:w-auto px-10 py-4 bg-sh_primary hover:bg-indigo-700 text-white font-black rounded-2xl shadow-xl shadow-indigo-100 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        Envoyer le message
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer de la carte -->
+        <div class="bg-gray-50 px-8 py-4 border-t border-gray-100 flex items-center justify-center">
+            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Sécurisé par ShopHub Messaging</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Transformation du widget TextArea de Django */
+    textarea {
+        width: 100%;
+        min-height: 180px;
+        padding: 1.5rem;
+        background-color: #F9FAFB;
+        border: 2px solid #F3F4F6;
+        border-radius: 2rem;
+        outline: none;
+        transition: all 0.3s ease;
+        font-family: inherit;
+        resize: none;
+    }
+
+    textarea:focus {
+        background-color: #FFFFFF;
+        border-color: #4F46E5;
+        box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.1);
+    }
+
+    /* Nettoyage des balises <p> générées par form.as_p si utilisé */
+    .sh-chat-form p {
+        margin-bottom: 0;
+    }
+    
+    .sh-chat-form label {
+        display: none; /* On cache le label par défaut car on en a fait un personnalisé au-dessus */
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "core/base.html" %}
+
+{% block title %}Ma Messagerie{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto py-10">
+    <!-- Header de l'Inbox -->
+    <div class="flex items-center justify-between mb-10">
+        <div>
+            <h1 class="text-4xl font-black text-sh_secondary tracking-tight">Messagerie</h1>
+            <p class="text-gray-500 mt-1">Gérez vos échanges avec les acheteurs et vendeurs.</p>
+        </div>
+        <div class="bg-indigo-50 px-4 py-2 rounded-2xl border border-indigo-100">
+            <span class="text-sh_primary font-bold text-sm">{{ conversations.count }} Discussion(s)</span>
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        {% for conversation in conversations %}
+            <a href="{% url 'conversation:detail' conversation.id %}" class="block group">
+                <div class="p-5 flex items-center bg-white border border-gray-100 rounded-[2rem] shadow-sm group-hover:shadow-xl group-hover:border-sh_primary/20 transition-all duration-300 transform group-hover:-translate-y-1">
+                    
+                    <!-- Vignette de l'article -->
+                    <div class="relative flex-shrink-0">
+                        <img src="{{ conversation.item.image.url }}" class="w-24 h-24 object-cover rounded-2xl shadow-md group-hover:scale-105 transition-transform duration-500" alt="{{ conversation.item.name }}">
+                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-sh_primary text-white rounded-full flex items-center justify-center border-4 border-white">
+                             <div class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                    </div>
+
+                    <!-- Infos de la conversation -->
+                    <div class="ml-8 flex-grow">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                            <div class="space-y-1">
+                                {% for member in conversation.members.all %}
+                                    {% if member != request.user %}
+                                        <h3 class="text-lg font-extrabold text-sh_secondary group-hover:text-sh_primary transition-colors">
+                                            {{ member.username|capfirst }}
+                                        </h3>
+                                    {% endif %}
+                                {% endfor %}
+                                <p class="text-sm font-medium text-gray-400 flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                    </svg>
+                                    {{ conversation.item.name }}
+                                </p>
+                            </div>
+                            
+                            <!-- Date et Badge -->
+                            <div class="text-right">
+                                <p class="text-xs font-bold text-gray-300 uppercase tracking-tighter">
+                                    {{ conversation.modified_at|date:"d M Y" }}
+                                </p>
+                                <p class="text-[10px] font-black text-sh_primary mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    VOIR LA DISCUSSION →
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flèche de navigation (Desktop) -->
+                    <div class="hidden md:block ml-6 text-gray-200 group-hover:text-sh_primary transition-colors px-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <!-- État Vide -->
+            <div class="text-center py-20 bg-gray-50 rounded-[3rem] border-2 border-dashed border-gray-200">
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 00-2 2H6a2 2 0 00-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-sh_secondary">Aucun message</h3>
+                <p class="text-gray-400 mt-2">Vos conversations s'afficheront ici dès qu'un acheteur vous contactera.</p>
+                <a href="{% url 'item:items' %}" class="mt-8 inline-block px-8 py-3 bg-white border border-gray-200 text-sh_secondary font-bold rounded-2xl hover:bg-gray-100 transition-all">
+                    Parcourir les articles
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Mon Dashboard{% endblock %}
+
+{% block content %}
+<div class="space-y-12">
+    <!-- Header du Dashboard -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 pb-8">
+        <div>
+            <h1 class="text-4xl font-extrabold text-sh_secondary tracking-tight">Tableau de bord</h1>
+            <p class="text-gray-500 mt-1">Gérez vos annonces et suivez vos performances locales.</p>
+        </div>
+        <a href="{% url 'item:new' %}" class="inline-flex items-center justify-center px-6 py-3 bg-sh_primary hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-indigo-100 transition-all transform hover:-translate-y-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
+            </svg>
+            Ajouter un article
+        </a>
+    </div>
+
+    <!-- Quick Stats (Visuel uniquement) -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+            <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Articles</p>
+            <p class="text-3xl font-black text-sh_secondary mt-2">{{ items.count }}</p>
+        </div>
+        <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+            <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Messages</p>
+            <p class="text-3xl font-black text-sh_primary mt-2">Nouveau</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-[2rem] border border-indigo-100 shadow-sm">
+            <p class="text-sm font-medium text-indigo-600 uppercase tracking-wider">Statut Compte</p>
+            <p class="text-3xl font-black text-indigo-900 mt-2">Vendeur</p>
+        </div>
+    </div>
+
+    <!-- Section Mes Articles -->
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden">
+        <div class="px-8 py-6 border-b border-gray-50 flex justify-between items-center">
+            <h2 class="text-2xl font-bold text-sh_secondary">Mes annonces actives</h2>
+            <span class="px-4 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full uppercase">En ligne</span>
+        </div>
+
+        <div class="p-8">
+            {% if items %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {% for item in items %}
+                        <div class="group bg-gray-50 rounded-3xl overflow-hidden border border-transparent hover:border-sh_primary hover:bg-white transition-all duration-300">
+                            <a href="{% url 'item:detail' item.id %}" class="block">
+                                <div class="aspect-video w-full overflow-hidden relative">
+                                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <span class="px-4 py-2 bg-white text-sh_secondary font-bold rounded-xl text-sm">Modifier / Voir</span>
+                                    </div>
+                                </div>
+                                <div class="p-5">
+                                    <h3 class="text-lg font-bold text-gray-800 truncate">{{ item.name }}</h3>
+                                    <div class="flex justify-between items-center mt-2">
+                                        <span class="text-sh_primary font-extrabold">{{ item.price }} FCFA</span>
+                                        <span class="text-xs text-gray-400">Ajouté récemment</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-12">
+                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 00-2 2H6a2 2 0 00-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                        </svg>
+                    </div>
+                    <p class="text-gray-500 font-medium">Vous n'avez pas encore d'articles en vente.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Section Catégories (Vue simplifiée pour Dashboard) -->
+    <div class="bg-gray-900 rounded-[2.5rem] p-10 text-white">
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold">Explorer vos catégories</h2>
+            <p class="text-gray-400">Naviguez rapidement à travers le catalogue.</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {% for category in categories %}
+                <a href="#" class="p-6 bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-all group">
+                    <h3 class="text-lg font-bold group-hover:text-sh_primary transition-colors">{{ category.name }}</h3>
+                    <p class="text-xs text-gray-500 mt-1">{{ category.items.count }} annonces</p>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

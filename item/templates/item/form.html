@@ -1,0 +1,130 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-10">
+    <!-- Header de la page -->
+    <div class="flex items-center gap-4 mb-10">
+        <a href="{% url 'dashboard:index' %}" class="p-3 bg-white border border-gray-100 rounded-2xl hover:bg-gray-50 transition-colors shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+        <div>
+            <h1 class="text-3xl font-extrabold text-sh_secondary tracking-tight">{{ title }}</h1>
+            <p class="text-gray-500 text-sm">Remplissez les détails pour attirer plus d'acheteurs.</p>
+        </div>
+    </div>
+
+    <form action="." method="post" enctype="multipart/form-data" class="space-y-8">
+        {% csrf_token %}
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Colonne de Gauche : Champs Principaux -->
+            <div class="md:col-span-2 space-y-6">
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100 space-y-6">
+                    
+                    <!-- On boucle sur les champs pour garder le contrôle total -->
+                    {% for field in form %}
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm font-bold text-sh_secondary flex items-center gap-2">
+                                {{ field.label }}
+                                {% if field.field.required %}<span class="text-red-400 text-xs">*</span>{% endif %}
+                            </label>
+                            
+                            <div class="sh-input-group">
+                                {{ field }}
+                            </div>
+
+                            {% if field.help_text %}
+                                <p class="text-xs text-gray-400 italic">{{ field.help_text }}</p>
+                            {% endif %}
+
+                            {% if field.errors %}
+                                <div class="text-red-500 text-xs font-medium mt-1">
+                                    {{ field.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            <!-- Colonne de Droite : Conseils & Action -->
+            <div class="space-y-6">
+                <!-- Box de Conseils -->
+                <div class="bg-indigo-900 p-8 rounded-[2.5rem] text-white shadow-xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h3 class="text-lg font-bold mb-4">Conseil Pro 💡</h3>
+                        <p class="text-indigo-200 text-sm leading-relaxed">
+                            Les annonces avec des <b>photos claires</b> et des <b>descriptions détaillées</b> se vendent 3x plus vite sur ShopHub.
+                        </p>
+                    </div>
+                    <div class="absolute -bottom-4 -right-4 w-20 h-20 bg-white/10 rounded-full blur-2xl"></div>
+                </div>
+
+                <!-- Box Action -->
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+                    <button type="submit" class="w-full py-4 px-8 bg-sh_primary hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-indigo-100 transition-all transform hover:-translate-y-1">
+                        Publier l'annonce
+                    </button>
+                    <p class="text-[10px] text-gray-400 text-center mt-4 uppercase tracking-widest">
+                        En publiant, vous acceptez nos CGU.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Erreurs Globales -->
+        {% if form.non_field_errors %}
+            <div class="p-6 bg-red-50 border-l-4 border-red-500 rounded-r-2xl text-red-700 text-sm">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+    </form>
+</div>
+
+<style>
+    /* Stylisation forcée des widgets Django pour ShopHub */
+    input[type="text"], 
+    input[type="number"], 
+    textarea, 
+    select {
+        width: 100%;
+        padding: 0.85rem 1.25rem;
+        background-color: #F9FAFB;
+        border: 1px solid #F3F4F6;
+        border-radius: 1.25rem;
+        outline: none;
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        background-color: #FFFFFF;
+        border-color: #4F46E5;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+    }
+
+    textarea {
+        min-height: 120px;
+        resize: none;
+    }
+
+    /* Style spécifique pour le champ d'upload de fichier */
+    input[type="file"] {
+        padding: 0.5rem;
+        background-color: transparent;
+        border: 2px dashed #E5E7EB;
+        border-radius: 1.25rem;
+        cursor: pointer;
+    }
+
+    input[type="file"]:hover {
+        border-color: #4F46E5;
+        background-color: #F5F3FF;
+    }
+</style>
+{% endblock %}

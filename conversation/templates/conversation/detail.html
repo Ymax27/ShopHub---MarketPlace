@@ -1,0 +1,120 @@
+{% extends "core/base.html" %}
+
+{% block title %}Discussion - {{ conversation.item.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto flex flex-col h-[75vh]">
+    
+    <!-- En-tête du Chat -->
+    <div class="flex items-center justify-between p-6 bg-white border border-gray-100 rounded-t-[2.5rem] shadow-sm">
+        <div class="flex items-center gap-4">
+            <div class="relative">
+                <img src="{{ conversation.item.image.url }}" class="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="">
+                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+            </div>
+            <div>
+                <h2 class="font-black text-sh_secondary leading-tight">{{ conversation.item.name }}</h2>
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">
+                    Discussion avec 
+                    {% for member in conversation.members.all %}
+                        {% if member != request.user %}{{ member.username }}{% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <a href="{% url 'conversation:inbox' %}" class="p-3 text-gray-400 hover:bg-gray-50 rounded-2xl transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </a>
+    </div>
+
+    <!-- Zone de messages (Scrollable) -->
+    <div class="flex-grow overflow-y-auto p-6 space-y-6 bg-gray-50/50 border-x border-gray-100 custom-scrollbar">
+        {% for message in conversation.messages.all %}
+            <div class="flex {% if message.created_by == request.user %} justify-end {% else %} justify-start {% endif %}">
+                <div class="max-w-[80%] md:max-w-[70%]">
+                    <!-- Infos Bulle -->
+                    <div class="flex items-center gap-2 mb-1 {% if message.created_by == request.user %} flex-row-reverse {% endif %}">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">{{ message.created_at|date:"H:i" }}</span>
+                    </div>
+
+                    <!-- Bulle -->
+                    <div class="p-4 rounded-[1.5rem] shadow-sm 
+                        {% if message.created_by == request.user %} 
+                            bg-sh_primary text-white rounded-tr-none 
+                        {% else %} 
+                            bg-white text-sh_secondary rounded-tl-none border border-gray-100 
+                        {% endif %}">
+                        <p class="text-sm leading-relaxed">{{ message.content }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="text-center py-10">
+                <p class="text-gray-400 italic">Aucun message pour l'instant. Soyez le premier à écrire !</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pied de page : Formulaire d'envoi -->
+    <div class="p-6 bg-white border border-gray-100 rounded-b-[2.5rem] shadow-lg">
+        <form action="." method="post" class="flex gap-4">
+            {% csrf_token %}
+            <div class="flex-grow sh-chat-input-container">
+                {{ form.content }}
+            </div>
+            <button type="submit" class="p-4 bg-sh_primary hover:bg-indigo-700 text-white rounded-2xl shadow-lg shadow-indigo-100 transition-all transform hover:scale-105 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform rotate-45" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+            </button>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Stylisation des messages et du formulaire */
+    .sh-chat-input-container textarea {
+        width: 100%;
+        min-height: 56px !important;
+        height: 56px !important;
+        padding: 1rem 1.5rem;
+        background-color: #F9FAFB;
+        border: 1px solid #F3F4F6;
+        border-radius: 1.25rem;
+        outline: none;
+        transition: all 0.2s;
+        resize: none;
+        font-size: 0.875rem;
+    }
+
+    .sh-chat-input-container textarea:focus {
+        background-color: #FFFFFF;
+        border-color: #4F46E5;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.05);
+    }
+
+    /* Cache le label automatique de Django */
+    .sh-chat-input-container p { margin: 0; }
+    .sh-chat-input-container label { display: none; }
+
+    /* Custom Scrollbar pour le flux de chat */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #E5E7EB;
+        border-radius: 10px;
+    }
+</style>
+
+<script>
+    // Petit script pour scroller automatiquement vers le bas à l'ouverture
+    const chatContainer = document.querySelector('.overflow-y-auto');
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+</script>
+{% endblock %}

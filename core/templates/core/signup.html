@@ -1,0 +1,126 @@
+{% extends "core/base.html" %}
+
+{% block title %}Créer un compte{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl w-full bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-gray-50">
+        
+        <!-- Panneau latéral informatif (Visible sur Desktop) -->
+        <div class="hidden md:flex md:w-5/12 bg-sh_primary p-12 text-white flex-col justify-between relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center mb-8">
+                    <span class="text-white font-bold text-2xl">S</span>
+                </div>
+                <h2 class="text-3xl font-bold mb-6">Rejoignez la communauté ShopHub.</h2>
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3 text-indigo-100">
+                        <svg class="h-6 w-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Vendez vos articles en quelques clics.</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-indigo-100">
+                        <svg class="h-6 w-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Discutez en direct avec les acheteurs.</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Décoration abstraite -->
+            <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-500 rounded-full opacity-50"></div>
+        </div>
+
+        <!-- Section Formulaire -->
+        <div class="w-full md:w-7/12 p-8 sm:p-12">
+            <div class="mb-10">
+                <h1 class="text-3xl font-extrabold text-sh_secondary mb-2">Inscription</h1>
+                <p class="text-gray-500">C'est rapide, gratuit et local.</p>
+            </div>
+
+            <form method="post" action="." class="space-y-5">
+                {% csrf_token %}
+
+                <div class="grid grid-cols-1 gap-5">
+                    <!-- Nom d'utilisateur -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2 text-indigo-900">Nom d'utilisateur</label>
+                        <div class="sh-input-wrapper relative">
+                            {{ form.username }}
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Adresse Email</label>
+                        <div class="sh-input-wrapper relative">
+                            {{ form.email }}
+                        </div>
+                    </div>
+
+                    <!-- Mots de passe en grid sur desktop pour gagner de la place -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Mot de passe</label>
+                            <div class="sh-input-wrapper relative">
+                                {{ form.password1 }}
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Confirmation</label>
+                            <div class="sh-input-wrapper relative">
+                                {{ form.password2 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alertes d'erreurs -->
+                {% if form.errors or form.non_field_errors %}
+                    <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-2xl animate-pulse">
+                        <div class="text-sm text-red-700">
+                            {% for field in form %}
+                                {{ field.errors|striptags }}
+                            {% endfor %}
+                            {{ form.non_field_errors|striptags }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full py-4 px-8 bg-sh_primary hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-xl shadow-indigo-100 transition-all transform hover:-translate-y-1">
+                        Créer mon compte
+                    </button>
+                </div>
+
+                <p class="text-center text-sm text-gray-500 mt-6">
+                    Déjà membre ? 
+                    <a href="{% url 'core:login' %}" class="text-sh_primary font-bold hover:underline">Connectez-vous</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Styling des widgets Django */
+    input[type="text"], input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        background-color: #F9FAFB;
+        border: 1px solid #F3F4F6;
+        border-radius: 1rem;
+        outline: none;
+        transition: all 0.2s ease;
+    }
+    input:focus {
+        background-color: #FFFFFF;
+        border-color: #4F46E5;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+    }
+    /* Suppression des listes à puces par défaut de Django pour les erreurs */
+    .errorlist { list-style: none; padding: 0; margin: 0; }
+</style>
+{% endblock %}

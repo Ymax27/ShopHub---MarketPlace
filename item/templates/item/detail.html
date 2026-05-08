@@ -1,0 +1,118 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ item.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <!-- Fil d'ariane / Retour -->
+    <nav class="flex mb-8 text-sm font-medium text-gray-500">
+        <a href="{% url 'item:items' %}" class="hover:text-sh_primary flex items-center gap-2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7 7-7" />
+            </svg>
+            Retour aux articles
+        </a>
+    </nav>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+        <!-- Section Image (Focus) -->
+        <div class="lg:col-span-7">
+            <div class="relative group rounded-[3rem] overflow-hidden bg-white shadow-2xl shadow-indigo-100 border border-gray-100">
+                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-auto object-cover max-h-[600px] transition-transform duration-700 group-hover:scale-105">
+                
+                <!-- Badge de catégorie sur l'image -->
+                <div class="absolute top-6 left-6">
+                    <span class="px-4 py-2 bg-white/90 backdrop-blur-md text-sh_secondary font-bold text-xs uppercase tracking-widest rounded-full shadow-sm">
+                        {{ item.category.name }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Infos & Actions (Sticky Card) -->
+        <div class="lg:col-span-5">
+            <div class="sticky top-28 space-y-6">
+                <div class="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-indigo-50 border border-gray-50">
+                    <h1 class="text-4xl font-black text-sh_secondary leading-tight mb-2">{{ item.name }}</h1>
+                    
+                    <div class="flex items-baseline gap-2 mb-6">
+                        <span class="text-3xl font-extrabold text-sh_primary">{{ item.price }}</span>
+                        <span class="text-lg font-bold text-sh_primary/70 tracking-tighter">FCFA</span>
+                    </div>
+
+                    <hr class="border-gray-50 mb-6">
+
+                    <!-- Info Vendeur Stylisée -->
+                    <div class="flex items-center gap-4 mb-8 bg-gray-50 p-4 rounded-2xl">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-sh_primary font-bold">
+                            {{ item.created_by.username|slice:":1"|upper }}
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Vendeur</p>
+                            <p class="font-bold text-sh_secondary">{{ item.created_by.username }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    {% if request.user == item.created_by %}
+                        <div class="grid grid-cols-2 gap-4">
+                            <a href="{% url 'item:edit' item.id %}" class="flex items-center justify-center py-4 bg-sh_secondary text-white font-bold rounded-2xl hover:bg-black transition-all">
+                                Modifier
+                            </a>
+                            <a href="{% url 'item:delete' item.id %}" class="flex items-center justify-center py-4 bg-red-50 text-red-600 font-bold rounded-2xl hover:bg-red-100 transition-all">
+                                Supprimer
+                            </a>
+                        </div>
+                        <p class="text-center text-[10px] text-gray-400 mt-4 uppercase font-bold tracking-widest italic">C'est votre annonce</p>
+                    {% else %}
+                        <a href="{% url 'conversation:new' item.id %}" class="flex items-center justify-center gap-3 w-full py-5 bg-sh_primary hover:bg-indigo-700 text-white font-extrabold rounded-2xl shadow-lg shadow-indigo-200 transition-all transform hover:-translate-y-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                            </svg>
+                            Contacter le vendeur
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Description Card -->
+                {% if item.description %}
+                <div class="bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100">
+                    <h3 class="text-sm font-black text-sh_secondary uppercase tracking-widest mb-4">Description</h3>
+                    <p class="text-gray-600 leading-relaxed italic">
+                        "{{ item.description }}"
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Articles Similaires -->
+    <div class="mt-32">
+        <div class="flex flex-col items-center mb-12 text-center">
+            <h2 class="text-3xl font-black text-sh_secondary">Vous pourriez aussi aimer</h2>
+            <div class="h-1.5 w-16 bg-sh_primary rounded-full mt-3"></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for item in related_items %}
+                <div class="group bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500">
+                    <a href="{% url 'item:detail' item.id %}">
+                        <div class="aspect-square overflow-hidden relative">
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                                <span class="text-white font-bold">Voir le produit</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold text-sh_secondary truncate group-hover:text-sh_primary transition-colors">{{ item.name }}</h3>
+                            <p class="text-sh_primary font-black mt-1">{{ item.price }} FCFA</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
